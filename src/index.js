@@ -1,11 +1,5 @@
 const path = require("node:path");
-const {
-  app,
-  screen,
-  ipcMain,
-  Menu,
-  BrowserWindow
-} = require("electron");
+const { app, screen, ipcMain, Menu, Tray, BrowserWindow } = require("electron");
 const { CORESITE_URL } = require("./config/env");
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -46,6 +40,18 @@ const createWindow = () => {
   ipcMain.on("focus", () => {
     mainWindow.show();
   });
+  /**
+   * 窗体收到消息
+   */
+  ipcMain.on("receiveMessage", () => {
+    mainWindow.flashFrame(true);
+  });
+  /**
+   * 关掉闪动效果
+   */
+  mainWindow.on("focus", () => {
+    mainWindow.flashFrame(false);
+  });
 };
 
 app.setAppUserModelId("com.coresite.desktop");
@@ -62,6 +68,19 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+
+  // 创建托盘图标
+  const icon = path.join(__dirname, "assets", "icon", "icon.png");
+  const tray = new Tray(icon);
+  const contextMenu = Menu.buildFromTemplate([
+    { label: "Item1", type: "radio" },
+    { label: "Item2", type: "radio" },
+    { label: "Item3", type: "radio", checked: true },
+    { label: "Item4", type: "radio" },
+  ]);
+  tray.setContextMenu(contextMenu);
+  tray.setToolTip("This is my application");
+  tray.setTitle("This is my title");
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
