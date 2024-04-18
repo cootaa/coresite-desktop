@@ -1,4 +1,4 @@
-const { app, BrowserWindow, screen } = require("electron");
+const { app, screen, BrowserWindow, Menu } = require("electron");
 const path = require("node:path");
 const { CORESITE_URL } = require("./config/env");
 
@@ -6,6 +6,9 @@ const { CORESITE_URL } = require("./config/env");
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
+
+// 禁止显示默认菜单
+Menu.setApplicationMenu(null);
 
 const createWindow = () => {
   // Create the browser window.
