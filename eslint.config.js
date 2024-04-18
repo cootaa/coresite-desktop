@@ -1,17 +1,18 @@
 const js = require("@eslint/js")
+const globals = require("globals")
 
 module.exports = [
   js.configs.recommended,
   {
-    env: {
-      commonjs: true
-    },
     rules: {
       "no-unused-vars": "warn",
       "no-undef": "warn"
     },
     languageOptions: {
-      sourceType: "commonjs"
+      sourceType: "commonjs",
+      globals: {
+        ...globals.node,
+      }
     }
   }
 ];
