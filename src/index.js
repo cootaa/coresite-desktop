@@ -1,5 +1,11 @@
-const { app, screen, BrowserWindow, Menu } = require("electron");
 const path = require("node:path");
+const {
+  app,
+  screen,
+  ipcMain,
+  Menu,
+  BrowserWindow
+} = require("electron");
 const { CORESITE_URL } = require("./config/env");
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -33,6 +39,13 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  /**
+   * 窗体聚焦
+   */
+  ipcMain.on("focus", () => {
+    mainWindow.show();
+  });
 };
 
 app.setAppUserModelId("com.coresite.desktop");
