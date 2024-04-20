@@ -29,11 +29,11 @@
   },
   "keywords": [],
   "author": {
-    "name": "CORESITE Team",
-    "email": "1376652515@qq.com"
+    "name": "CORESITE Team"
   },
   "license": "MIT",
   "dependencies": {
+    "@electron-forge/maker-dmg": "^7.4.0",
     "electron-squirrel-startup": "^1.0.0"
   }
 }
