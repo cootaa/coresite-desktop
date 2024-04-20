@@ -1,5 +1,5 @@
 const path = require("node:path");
-const { app, screen, ipcMain, clipboard, Menu, BrowserWindow } = require("electron");
+const { app, screen, ipcMain, clipboard, Menu, MenuItem, BrowserWindow } = require("electron");
 const { CORESITE_URL } = require("./config/env");
 const windowEvents = require("./common/windowEvents");
 
@@ -9,7 +9,7 @@ if (require("electron-squirrel-startup")) {
 }
 
 // 禁止显示默认菜单
-Menu.setApplicationMenu(null);
+// Menu.setApplicationMenu(null);
 
 const createWindow = () => {
   // Create the browser window.
@@ -24,6 +24,8 @@ const createWindow = () => {
     // 设置最小尺寸
     minWidth: 1024,
     minHeight: 720,
+    frame:false, // windows下隐藏导航栏
+    titleBarStyle: 'hidden', //macOS下隐藏导航栏
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       // 不缓存页面
@@ -34,6 +36,28 @@ const createWindow = () => {
   // and load the index.html of the app.
   // mainWindow.loadFile(path.join(__dirname, 'index.html'));
   mainWindow.loadURL(CORESITE_URL + "/user/login");
+
+  // 自定义右键菜单
+    const menu = new Menu();
+    menu.append(new MenuItem({
+        label: '复制',
+        role: 'copy',
+    }));
+    menu.append(new MenuItem({
+        label: '粘贴',
+        role: 'paste',
+    }));
+    menu.append(new MenuItem({
+        label: '全选',
+        role: 'selectall',
+    }));
+    menu.append(new MenuItem({
+        label: '剪切',
+        role: 'cut',
+    }))
+    mainWindow.webContents.on('context-menu', (e, params) => {
+        menu.popup({window: mainWindow,x: params.x,y: params.y});
+    })
 
   // Open the DevTools.调试专用
   mainWindow.webContents.openDevTools();
