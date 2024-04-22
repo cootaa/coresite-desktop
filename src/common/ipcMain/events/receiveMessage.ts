@@ -1,6 +1,6 @@
 import EventBase from "../base";
 
-export const ReceiveMessageEventName = "focus";
+export const ReceiveMessageEventName = "receiveMessage";
 
 /**
  * IPC：接收消息
