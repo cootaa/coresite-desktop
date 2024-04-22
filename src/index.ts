@@ -1,12 +1,13 @@
 import path from "node:path";
 import { app, net, Menu, BrowserWindow } from "electron";
 
-import { CORESITE_URL } from "./config/env";
+import { DEFAULT_URL } from "./config/env";
 import { setupContextMenu } from "./common/contextMenu";
 
 // 更新监听
 import { updateWatcher } from "./common/update";
 import setupIPCMain from "./common/ipcMain";
+import getLocalhost from "./common/localhost/getLocalhost";
 updateWatcher();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -43,17 +44,10 @@ const createWindow = () => {
   // 判断有无网络
   if (net.isOnline()) {
     // 有网络跳转登陆页面
-    mainWindow.loadURL(CORESITE_URL + "/user/login");
+    mainWindow.loadURL(DEFAULT_URL);
   } else {
-    // and load the index.html of the app.
-    if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-      mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
-    } else {
-      mainWindow.loadFile(
-        path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
-      );
-    }
     // 无网络跳转离线页面
+    getLocalhost(mainWindow, "offline");
     // mainWindow.loadFile(path.join(__dirname, "pages", "offline.html"));
   }
   // 自定义右键菜单
