@@ -1,13 +1,11 @@
 import path from "node:path";
-import { app, net, Menu, BrowserWindow } from "electron";
-
-import { DEFAULT_URL } from "./config/env";
+import { app, Menu, BrowserWindow } from "electron";
 import { setupContextMenu } from "./common/contextMenu";
 
 // 更新监听
 import { updateWatcher } from "./common/update";
 import setupIPCMain from "./common/ipcMain";
-import getLocalhost from "./common/localhost/getLocalhost";
+import { checkNet } from "./common/localhost/offline";
 updateWatcher();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -35,21 +33,10 @@ const createWindow = () => {
     // titleBarStyle: 'hidden', //macOS下隐藏导航栏
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      // 不缓存页面
-      //   partition: String(+new Date()),
     },
   });
-
-  // and load the index.html of the app.
   // 判断有无网络
-  if (net.isOnline()) {
-    // 有网络跳转登陆页面
-    mainWindow.loadURL(DEFAULT_URL);
-  } else {
-    // 无网络跳转离线页面
-    getLocalhost(mainWindow, "offline");
-    // mainWindow.loadFile(path.join(__dirname, "pages", "offline.html"));
-  }
+  checkNet(mainWindow);
   // 自定义右键菜单
   setupContextMenu(mainWindow);
   // Open the DevTools.调试专用
