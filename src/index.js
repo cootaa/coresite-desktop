@@ -1,10 +1,12 @@
 const path = require("node:path");
-const { app, net, Menu, MenuItem, BrowserWindow } = require("electron");
+const { app, net, Menu, BrowserWindow } = require("electron");
 
 const { CORESITE_URL } = require("./config/env");
+const { setupContextMenu } = require("./common/contextMenu");
 
 const windowEvents = require("./common/windowEvents");
 
+// 更新监听
 const { updateWatcher } = require("./common/update");
 updateWatcher();
 
@@ -49,40 +51,7 @@ const createWindow = () => {
   }
 
   // 自定义右键菜单
-  const menu = new Menu();
-  menu.append(
-    new MenuItem({
-      label: "复制",
-      role: "copy",
-    }),
-  );
-  menu.append(
-    new MenuItem({
-      label: "粘贴",
-      role: "paste",
-    }),
-  );
-  menu.append(
-    new MenuItem({
-      label: "全选",
-      role: "selectall",
-    }),
-  );
-  menu.append(
-    new MenuItem({
-      label: "剪切",
-      role: "cut",
-    }),
-  );
-  menu.append(
-    new MenuItem({
-      label: "app: " + app.getVersion(),
-      role: "about",
-    }),
-  );
-  mainWindow.webContents.on("context-menu", (e, params) => {
-    menu.popup({ window: mainWindow, x: params.x, y: params.y });
-  });
+  setupContextMenu(mainWindow);
 
   // Open the DevTools.调试专用
   mainWindow.webContents.openDevTools();
