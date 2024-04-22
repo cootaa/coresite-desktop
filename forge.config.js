@@ -1,3 +1,7 @@
+/**
+ * 了解更多 https://www.electronforge.io/config/makers
+ */
+
 const { FusesPlugin } = require("@electron-forge/plugin-fuses");
 const { FuseV1Options, FuseVersion } = require("@electron/fuses");
 const {
@@ -17,21 +21,25 @@ module.exports = {
   rebuildConfig: {},
   makers: [
     {
-      name: "@electron-forge/maker-squirrel",
-      config: {},
-    },
-    {
       name: "@electron-forge/maker-zip",
-      platforms: ["darwin"],
+      platforms: ['darwin']
     },
+    // windows系统打包配置
     {
-      name: "@electron-forge/maker-deb",
-      config: {},
-    },
+        name: "@electron-forge/maker-squirrel",
+        config: {},
+      },
+    // macOS系统打包配置
     {
-      name: "@electron-forge/maker-rpm",
-      config: {},
+        name: '@electron-forge/maker-dmg',
+        platforms: ["darwin"],
+        config: {}
     },
+    // linux系统打包配置
+    {
+        name: '@electron-forge/maker-rpm',
+        config: {},
+    }
   ],
   plugins: [
     {

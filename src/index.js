@@ -1,5 +1,5 @@
 const path = require("node:path");
-const { app, net, screen, Menu, BrowserWindow } = require("electron");
+const { app, screen, net, clipboard, Menu, MenuItem, BrowserWindow } = require("electron");
 const { CORESITE_URL } = require("./config/env");
 const windowEvents = require("./common/windowEvents");
 
@@ -9,7 +9,7 @@ if (require("electron-squirrel-startup")) {
 }
 
 // 禁止显示默认菜单
-Menu.setApplicationMenu(null);
+// Menu.setApplicationMenu(null);
 
 const createWindow = () => {
   // Create the browser window.
@@ -17,14 +17,19 @@ const createWindow = () => {
     // 默认窗口标题，如果由loadURL()加载的HTML文件中含有标签<title>，此属性将被忽略。
     title: "CORESITE",
     // 设置窗口尺寸为屏幕工作区尺寸
-    width: screen.getPrimaryDisplay().workAreaSize.width,
-    height: screen.getPrimaryDisplay().workAreaSize.height,
+    // width: screen.getPrimaryDisplay().workAreaSize.width,
+    // height: screen.getPrimaryDisplay().workAreaSize.height,
+    width: 1280,
+    height: 768,
     // 设置最小尺寸
     minWidth: 1024,
-    minHeight: 768,
+    minHeight: 720,
+    frame:false, // windows下隐藏导航栏
+    titleBarStyle: 'hidden', //macOS下隐藏导航栏
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      partition: String(+new Date()),
+      // 不缓存页面
+    //   partition: String(+new Date()),
     },
   });
 
@@ -38,7 +43,29 @@ const createWindow = () => {
     mainWindow.loadFile(path.join(__dirname, "pages", "offline.html"));
   }
 
-  // Open the DevTools.
+  // 自定义右键菜单
+    const menu = new Menu();
+    menu.append(new MenuItem({
+        label: '复制',
+        role: 'copy',
+    }));
+    menu.append(new MenuItem({
+        label: '粘贴',
+        role: 'paste',
+    }));
+    menu.append(new MenuItem({
+        label: '全选',
+        role: 'selectall',
+    }));
+    menu.append(new MenuItem({
+        label: '剪切',
+        role: 'cut',
+    }))
+    mainWindow.webContents.on('context-menu', (e, params) => {
+        menu.popup({window: mainWindow,x: params.x,y: params.y});
+    })
+
+  // Open the DevTools.调试专用
   mainWindow.webContents.openDevTools();
 
   windowEvents(app, mainWindow);
@@ -71,3 +98,10 @@ app.on("window-all-closed", () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+// 设置应用程序开机自启动
+app.setLoginItemSettings({
+    openAtLogin: true,
+    openAsHidden: false, // 设置为 true 可以隐藏启动时的窗口
+    args: [] // 自定义参数
+});
