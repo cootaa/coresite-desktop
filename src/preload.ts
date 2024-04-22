@@ -13,4 +13,10 @@ contextBridge.exposeInMainWorld("coresite", {
   receiveMessage: () => {
     ipcRenderer.send("receiveMessage");
   },
+  /**
+   * 检查网络状态
+   */
+  checkNet: () => {
+    ipcRenderer.send("checkNet");
+  },
 });

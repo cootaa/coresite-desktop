@@ -5,7 +5,7 @@
     </template>
     <template #subtitle> DNS_PROBE_FINISHED_NO_INTERNET </template>
     <template #extra>
-      <a-button type="primary">Refresh</a-button>
+      <a-button type="primary" @click="handleRetry">Retry</a-button>
     </template>
     <a-typography style="background: var(--color-fill-2); padding: 24px">
       <a-typography-paragraph>Try:</a-typography-paragraph>
@@ -16,6 +16,14 @@
     </a-typography>
   </a-result>
 </template>
+
+<script lang="ts" setup>
+const handleRetry = () => {
+  // 获取 coresite 对象
+  const { coresite } = window as any;
+  coresite && coresite.checkNet();
+};
+</script>
 
 <style lang="less">
 #app {
