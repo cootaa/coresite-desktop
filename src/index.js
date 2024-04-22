@@ -1,15 +1,12 @@
 const path = require("node:path");
-const {
-  app,
-  screen,
-  net,
-  clipboard,
-  Menu,
-  MenuItem,
-  BrowserWindow,
-} = require("electron");
+const { app, net, Menu, MenuItem, BrowserWindow } = require("electron");
+
 const { CORESITE_URL } = require("./config/env");
+
 const windowEvents = require("./common/windowEvents");
+
+const { updateWatcher } = require("./common/update");
+updateWatcher();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -75,6 +72,12 @@ const createWindow = () => {
     new MenuItem({
       label: "剪切",
       role: "cut",
+    }),
+  );
+  menu.append(
+    new MenuItem({
+      label: "app: " + app.getVersion(),
+      role: "about",
     }),
   );
   mainWindow.webContents.on("context-menu", (e, params) => {

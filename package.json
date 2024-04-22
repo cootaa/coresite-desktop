@@ -1,7 +1,7 @@
 {
   "name": "coresite-desktop",
   "productName": "CORESITE",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "CORESITE",
   "main": "src/index.js",
@@ -21,6 +21,7 @@
     "@electron-forge/maker-zip": "^7.4.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
     "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron-forge/publisher-github": "^7.4.0",
     "@electron/fuses": "^1.8.0",
     "@eslint/js": "^9.0.0",
     "electron": "30.0.0",
@@ -31,9 +32,11 @@
   "author": {
     "name": "CORESITE Team"
   },
+  "repository": "github:cootaa/coresite-desktop",
   "license": "MIT",
   "dependencies": {
     "@electron-forge/maker-dmg": "^7.4.0",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "update-electron-app": "^3.0.0"
   }
 }
