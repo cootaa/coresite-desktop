@@ -4,10 +4,9 @@ import { app, net, Menu, BrowserWindow } from "electron";
 import { CORESITE_URL } from "./config/env";
 import { setupContextMenu } from "./common/contextMenu";
 
-import windowEvents from "./common/windowEvents";
-
 // 更新监听
 import { updateWatcher } from "./common/update";
+import setupIPCMain from "./common/ipcMain";
 updateWatcher();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -57,14 +56,12 @@ const createWindow = () => {
     // 无网络跳转离线页面
     // mainWindow.loadFile(path.join(__dirname, "pages", "offline.html"));
   }
-
   // 自定义右键菜单
   setupContextMenu(mainWindow);
-
   // Open the DevTools.调试专用
   mainWindow.webContents.openDevTools();
-
-  windowEvents(app, mainWindow);
+  // 事件监听
+  setupIPCMain(app, mainWindow);
 };
 
 app.setAppUserModelId("com.coresite.desktop");
