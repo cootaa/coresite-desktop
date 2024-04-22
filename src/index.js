@@ -1,5 +1,13 @@
 const path = require("node:path");
-const { app, screen, net, clipboard, Menu, MenuItem, BrowserWindow } = require("electron");
+const {
+  app,
+  screen,
+  net,
+  clipboard,
+  Menu,
+  MenuItem,
+  BrowserWindow,
+} = require("electron");
 const { CORESITE_URL } = require("./config/env");
 const windowEvents = require("./common/windowEvents");
 
@@ -9,7 +17,7 @@ if (require("electron-squirrel-startup")) {
 }
 
 // 禁止显示默认菜单
-// Menu.setApplicationMenu(null);
+Menu.setApplicationMenu(null);
 
 const createWindow = () => {
   // Create the browser window.
@@ -24,12 +32,12 @@ const createWindow = () => {
     // 设置最小尺寸
     minWidth: 1024,
     minHeight: 720,
-    frame:false, // windows下隐藏导航栏
-    titleBarStyle: 'hidden', //macOS下隐藏导航栏
+    // frame:false, // windows下隐藏导航栏
+    // titleBarStyle: 'hidden', //macOS下隐藏导航栏
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       // 不缓存页面
-    //   partition: String(+new Date()),
+      //   partition: String(+new Date()),
     },
   });
 
@@ -44,26 +52,34 @@ const createWindow = () => {
   }
 
   // 自定义右键菜单
-    const menu = new Menu();
-    menu.append(new MenuItem({
-        label: '复制',
-        role: 'copy',
-    }));
-    menu.append(new MenuItem({
-        label: '粘贴',
-        role: 'paste',
-    }));
-    menu.append(new MenuItem({
-        label: '全选',
-        role: 'selectall',
-    }));
-    menu.append(new MenuItem({
-        label: '剪切',
-        role: 'cut',
-    }))
-    mainWindow.webContents.on('context-menu', (e, params) => {
-        menu.popup({window: mainWindow,x: params.x,y: params.y});
-    })
+  const menu = new Menu();
+  menu.append(
+    new MenuItem({
+      label: "复制",
+      role: "copy",
+    }),
+  );
+  menu.append(
+    new MenuItem({
+      label: "粘贴",
+      role: "paste",
+    }),
+  );
+  menu.append(
+    new MenuItem({
+      label: "全选",
+      role: "selectall",
+    }),
+  );
+  menu.append(
+    new MenuItem({
+      label: "剪切",
+      role: "cut",
+    }),
+  );
+  mainWindow.webContents.on("context-menu", (e, params) => {
+    menu.popup({ window: mainWindow, x: params.x, y: params.y });
+  });
 
   // Open the DevTools.调试专用
   mainWindow.webContents.openDevTools();
@@ -101,7 +117,7 @@ app.on("window-all-closed", () => {
 
 // 设置应用程序开机自启动
 app.setLoginItemSettings({
-    openAtLogin: true,
-    openAsHidden: false, // 设置为 true 可以隐藏启动时的窗口
-    args: [] // 自定义参数
+  openAtLogin: true,
+  openAsHidden: false, // 设置为 true 可以隐藏启动时的窗口
+  args: [], // 自定义参数
 });
