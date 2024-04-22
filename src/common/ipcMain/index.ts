@@ -4,8 +4,8 @@ import WindowEvents from "./windows";
 
 /**
  * 注册窗体事件 包括 IPCMain & MainWindowEvents
- * @param app 
- * @param mainWindow 
+ * @param app
+ * @param mainWindow
  */
 export default function setupIPCMain(
   app: Electron.App,
