@@ -6,7 +6,7 @@
   "description": "CORESITE",
   "main": ".vite/build/index.js",
   "scripts": {
-    "format": "prettier src/**/*.js --write",
+    "format": "prettier src/**/*.{js,ts,vue} --write",
     "lint": "eslint src",
     "start": "electron-forge start",
     "package": "electron-forge package",

@@ -1,4 +1,4 @@
-import { updateElectronApp } from 'update-electron-app';
+import { updateElectronApp } from "update-electron-app";
 
 /**
  * 更新监听

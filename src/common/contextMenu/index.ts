@@ -1,4 +1,10 @@
-import { app, BrowserWindow, Menu, MenuItem, MenuItemConstructorOptions } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  Menu,
+  MenuItem,
+  MenuItemConstructorOptions,
+} from "electron";
 
 /**
  * 右键菜单选项
