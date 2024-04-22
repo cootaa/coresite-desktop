@@ -1,13 +1,13 @@
-const { ipcMain } = require("electron");
+import { BrowserWindow, ipcMain } from 'electron';
 
 /**
  * 注册窗体事件
  * @param {Electron.App} app
  * @param {BrowserWindow} mainWindow
  */
-module.exports = (app, mainWindow) => {
+export default (app: Electron.App, mainWindow: BrowserWindow) => {
   // mac dock 抖动
-  let bounce;
+  let bounce = 0;
   /**
    * 窗体聚焦
    */

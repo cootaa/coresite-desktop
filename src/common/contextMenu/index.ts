@@ -1,14 +1,9 @@
-const { app, Menu, MenuItem } = require("electron");
-
-/**
- * 类型提示
- * @typedef {import('electron').BrowserWindow} BrowserWindow
- */
+import { app, BrowserWindow, Menu, MenuItem, MenuItemConstructorOptions } from 'electron';
 
 /**
  * 右键菜单选项
  */
-const menus = [
+const menus: MenuItemConstructorOptions[] = [
   {
     label: "复制",
     role: "copy",
@@ -19,7 +14,7 @@ const menus = [
   },
   {
     label: "全选",
-    role: "selectall",
+    role: "selectAll",
   },
   {
     label: "剪切",
@@ -35,7 +30,7 @@ const menus = [
  * 创建右键菜单
  * @param {BrowserWindow} mainWindow
  */
-const setupContextMenu = (mainWindow) => {
+export const setupContextMenu = (mainWindow: BrowserWindow) => {
   const menu = new Menu();
   // 遍历生成 菜单选项
   menus.forEach((item) => {
@@ -45,8 +40,4 @@ const setupContextMenu = (mainWindow) => {
   mainWindow.webContents.on("context-menu", (e, params) => {
     menu.popup({ window: mainWindow, x: params.x, y: params.y });
   });
-};
-
-module.exports = {
-  setupContextMenu,
 };

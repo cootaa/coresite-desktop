@@ -1,13 +1,13 @@
-const path = require("node:path");
-const { app, net, Menu, BrowserWindow } = require("electron");
+import path from 'node:path';
+import { app, net, Menu, BrowserWindow } from 'electron';
 
-const { CORESITE_URL } = require("./config/env");
-const { setupContextMenu } = require("./common/contextMenu");
+import { CORESITE_URL } from './config/env';
+import { setupContextMenu } from './common/contextMenu';
 
-const windowEvents = require("./common/windowEvents");
+import windowEvents from './common/windowEvents';
 
 // 更新监听
-const { updateWatcher } = require("./common/update");
+import { updateWatcher } from './common/update';
 updateWatcher();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -46,8 +46,14 @@ const createWindow = () => {
     // 有网络跳转登陆页面
     mainWindow.loadURL(CORESITE_URL + "/user/login");
   } else {
+    // and load the index.html of the app.
+    if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+      mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+    } else {
+      mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+    }
     // 无网络跳转离线页面
-    mainWindow.loadFile(path.join(__dirname, "pages", "offline.html"));
+    // mainWindow.loadFile(path.join(__dirname, "pages", "offline.html"));
   }
 
   // 自定义右键菜单
