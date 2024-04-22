@@ -1,5 +1,5 @@
 const path = require("node:path");
-const { app, screen, ipcMain, Menu, BrowserWindow } = require("electron");
+const { app, net, screen, Menu, BrowserWindow } = require("electron");
 const { CORESITE_URL } = require("./config/env");
 const windowEvents = require("./common/windowEvents");
 
@@ -29,8 +29,14 @@ const createWindow = () => {
   });
 
   // and load the index.html of the app.
-  // mainWindow.loadFile(path.join(__dirname, 'index.html'));
-  mainWindow.loadURL(CORESITE_URL + "/user/login");
+  // 判断有无网络
+  if (net.isOnline()) {
+    // 有网络跳转登陆页面
+    mainWindow.loadURL(CORESITE_URL + "/user/login");
+  } else {
+    // 无网络跳转离线页面
+    mainWindow.loadFile(path.join(__dirname, "pages", "offline.html"));
+  }
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
