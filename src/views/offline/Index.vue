@@ -20,7 +20,7 @@
 <script lang="ts" setup>
 const handleRetry = () => {
   // 获取 coresite 对象
-  const { coresite } = window as any;
+  const { coresite } = window;
   coresite && coresite.checkNet();
 };
 </script>
